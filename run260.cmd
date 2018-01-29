@@ -51,7 +51,7 @@ if "%9"=="1" (goto rapidstart)
 if "%9"=="2" (goto rapidstart)
 
 set lapool="jp.lapool.me"
-echo BitZeny Starter v1.3.3 for minerd260 made by.kazu0617
+echo BitZeny Starter v1.3.4 for minerd260 made by.kazu0617
 echo このツールは、BitZeny Discordや、IRQチューニングによるハッシュレートの向上を最大限生かせ、かつ設定をなるべく楽に、
 echo 対話式にできるように制作した調整ツールとなります。
 echo 当ツールではLapoolの使用に関して制限をかけております。他のプールサイトを使用していただくようお願いします。
@@ -222,10 +222,9 @@ echo [5] Bunnymining
 echo [6] BitZenyPool　寛 永 通 宝
 echo [49] その他(MPOS)
 echo ---ここからNOMP(Mining Fee逆順)---
-echo [50] BitZeny 2.0 採掘試験場(Fee:0%% BlockBonus:5ZNY)
-echo [51] WPOOL(Fee:0.1%%)
-echo [52] kruptos:BitZeny Pool(Fee:0.1%%)
-echo [53] Bluepool(Fee:1%%)
+echo [50] WPOOL(Fee:0.1%%)
+echo [51] kruptos:BitZeny Pool(Fee:0.1%%)
+echo [52] Bluepool(Fee:1%%)
 echo [99] その他(NOMP)
 
 set /p input=
@@ -269,20 +268,15 @@ if /i "%input%" == "6" (
 
 if /i "%input%" == "50" (
   set server=nomp
-  set stratum=stratum+tcp://stratum.pool.shirako.io:50000
+  set stratum=stratum+tcp://wpool.work:15022
   goto change
 )
 if /i "%input%" == "51" (
   set server=nomp
-  set stratum=stratum+tcp://wpool.work:15022
-  goto change
-)
-if /i "%input%" == "52" (
-  set server=nomp
   set stratum=stratum+tcp://mining.bit-univ.jp:43333
   goto change
 )
-if /i "%input%" == "53" (
+if /i "%input%" == "52" (
   set server=nomp
   set stratum=stratum+tcp://bitzeny.bluepool.info:9999
   goto change
