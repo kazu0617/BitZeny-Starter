@@ -6,10 +6,10 @@ Minerd走らせるときに細かく設定できるbat。
 
 ## どやってつかうの
 とりあえず右上からDLするか`git clone`からコピーして対応するのをminerdの直下にコピー。<br>
-メジャーな二つは
+意味合いとしては
 - run250 -> minerd250用
-- run260 -> minerd260用<br>
-後はファイル名で察してくれると
+- run260 -> minerd260用
+- runopt-avx2-sha -> cpuminer-avx2-sha用
 
 ## もっと詳しく
 とりあえずWikiを見てください
@@ -19,4 +19,4 @@ Minerd走らせるときに細かく設定できるbat。
 
 ## 募金は？
 `ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6`<br>
-参考までに配布開始から今(2018/01/28 03:37)まで0ZNY募金されました。
+参考までに配布開始から今(2018/02/03)まで0ZNY募金されました。

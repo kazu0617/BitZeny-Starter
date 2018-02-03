@@ -50,8 +50,9 @@ if "%8"=="2" (goto rapidstart)
 if "%9"=="1" (goto rapidstart)
 if "%9"=="2" (goto rapidstart)
 
+set cthreadpriority=5
 set lapool="jp.lapool.me"
-echo BitZeny Starter v1.3.4 for made cpuminer-avx2-sha by.kazu0617
+echo BitZeny Starter v1.3.5 for made cpuminer-avx2-sha by.kazu0617
 echo 当ツールではLapoolの使用に関して制限をかけております。他のプールサイトを使用していただくようお願いします。
 echo このメッセージは10秒後に消えます。すぐに飛ばしたければ何かキーを入力してください。
 timeout 10 >nul
@@ -60,6 +61,7 @@ cls
 TITLE "BitZeny-Starter ( CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )"
 echo set custom thread= %cthread%
 if %cthread%==true (echo thread number= %cthreadnumber%)
+echo cpu priotity= %cthreadpriority%
 echo servertype= %server%
 echo serveraddress= %stratum%
 echo worker= %worker%
@@ -86,9 +88,9 @@ echo [1] OK(QuietMode)
 echo [2] NG (修正する)
 set /p input=
 if defined input set input=%input:"=%
-if /i "%input%" == "0" (goto starter)
-if /i "%input%" == "1" (goto starter)
-if /i "%input%" == "2" (goto change)
+if %input% equ 0 (goto starter)
+if %input% equ 1 (goto starter)
+if %input% equ 2 (goto change)
 goto repeat
 
 :starter
@@ -97,7 +99,7 @@ set tm=%time%
 if "%tm:~0,5%"==" 0:00" set dt=%date%
 set FName=minerd-%dt:~-10,4%-%dt:~-5,2%-%dt:~-2,2%_%tm:~-11,2%.%tm:~-8,2%
 
-if /i "%input%" == "1" (
+if %input% equ 1 (
   TITLE "BitZeny-Starter ( QuietMode | CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )"
 )
 
@@ -108,45 +110,24 @@ if defined server (
 )
 
 :mpos
-if /i "%input%" == "1" ( set quiet=-q) 
+set quiet=
+if %input% equ 1 ( set quiet=-q ) 
 if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass% --hide-diff --no-color --cpu-priority 5 --cpu-affinity %affinity%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass% --hide-diff --no-color --cpu-priority %cthreadpriority% --cpu-affinity %affinity%
 ) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -o %stratum% -u %worker% -p %workerpass% --hide-diff --no-color --cpu-priority 5 --cpu-affinity %affinity%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -o %stratum% -u %worker% -p %workerpass% --hide-diff --no-color --cpu-priority %cthreadpriority% --cpu-affinity %affinity%
 )
 echo 実行されました。数秒後に設定画面に戻ります
 set input=3
 timeout 5 > nul
 goto repeat
 :nomp
-if /i "%input%" == "1" ( set quiet=-q )
+set quiet=
+if %input% equ 1 ( set quiet=-q )
 if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -t %cthreadnumber% -a yescryptr8 -o %stratum% -u %address% --hide-diff --no-color --cpu-priority 5 --cpu-affinity %affinity%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -t %cthreadnumber% -a yescryptr8 -o %stratum% -u %address% --hide-diff --no-color --cpu-priority %cthreadpriority% --cpu-affinity %affinity%
 ) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -o %stratum% -u %address% --hide-diff --no-color --cpu-priority 5 --cpu-affinity %affinity%
-)
-echo 実行されました。数秒後に設定画面に戻ります
-set input=3
-timeout 5 > nul
-goto repeat
-
-:mpos-test
-if /i "%input%" == "1" ( set quiet=-q) 
-if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass% --cpu-affinity %affinity%
-) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -o %stratum% -u %worker% -p %workerpass% --cpu-affinity %affinity%
-)
-echo 実行されました。数秒後に設定画面に戻ります
-set input=3
-timeout 5 > nul
-goto repeat
-:nomp-test
-if /i "%input%" == "1" ( set quiet=-q )
-if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% cpuminer-avx2-sha.exe %quiet% -t %cthreadnumber% -a yescryptr8 -o %stratum% -u %address% --cpu-affinity %affinity%
-) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -o %stratum% -u %address% --cpu-affinity %affinity%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" cpuminer-avx2-sha.exe %quiet% -a yescryptr8 -o %stratum% -u %address% --hide-diff --no-color --cpu-priority %cthreadpriority% --cpu-affinity %affinity%
 )
 echo 実行されました。数秒後に設定画面に戻ります
 set input=3
@@ -166,6 +147,7 @@ echo [9] 編集を終了する
 echo ---簡易表示---
 echo set custom thread= %cthread%
 if "%cthread%"=="true" (echo thread number= %cthreadnumber%)
+echo cpu priotity= %cthreadpriority%
 echo server= %server%
 echo serveraddress= %stratum%
 echo worker= %worker%
@@ -198,16 +180,34 @@ if /i "%input%" == "0" (
 if /i "%input%" == "1" (
   set cthread=false
   set cthreadnumber=0
-  goto change
+  goto change-cp
 )
+goto change-t
+
 :change-ct
 echo スレッド数を入力してください(チェックはしないので注意！)... 
 set /P cthreadnumber=
+goto change-cp
+
+:change-cp
+echo minerdの使用優先度を選んでください(0～5で設定可能です;0が最低、5が最高)
+echo エラーチェックに関してはなるべくしていますが、一部正しくない値のうち一部は入れれますが、マイナーが起動しなくなります
+set /P cthreadpriority=
+if defined input set input=%input:"=%
+if "%cthreadpriority%" gtr "5" (
+  echo 値が大きすぎます。再設定をお願いします…
+  timeout 5 >nul
+  goto change-cp
+) else if "%cthreadpriority%" lss "0" (
+  echo 値が小さすぎます。再設定をお願いします…
+  timeout 5 >nul
+  goto change-cp
+)
 goto change
 
 :change-ws
 cls
-echo サーバー名を選択してください（2018/01/25現在）
+echo サーバー名を選択してください（2018/02/03現在）
 echo （ここのプリセットに用意されているのは高難易度のもののみです。）
 echo （中難易度、低難易度のものはその他を設定の上URLをコピーしてきて下さい）
 echo ---MPOS(Mining Fee:0%%のサーバーのみ記載)---
@@ -215,13 +215,15 @@ echo [0] 俺のプール＠東京鯖
 echo [1] Happy Miner
 echo [2] ココアプール
 echo [3] ぷりぷりぷーる（bitzeny）
-echo [4] powerpool for BitZeny
-echo [5] Bunnymining
-echo [6] BitZenyPool　寛 永 通 宝
+echo [4] Knyacki pool
+echo [5] powerpool for BitZeny
+echo [6] Bunnymining
+echo [7] BitZenyPool　寛 永 通 宝
 echo [49] その他(MPOS)
 echo ---ここからNOMP(Mining Fee逆順)---
-echo [51] WPOOL(Fee:0.1%%)
-echo [52] kruptos:BitZeny Pool(Fee:0.1%%)
+echo [50] WPOOL(Fee:0.1%%)
+echo [51] kruptos:BitZeny Pool(Fee:0.1%%)
+echo [52] Daddy-pool(Fee:1%%)
 echo [53] Bluepool(Fee:1%%)
 echo [99] その他(NOMP)
 
@@ -250,15 +252,20 @@ if /i "%input%" == "3" (
 )
 if /i "%input%" == "4" (
   set server=mpos
-  set stratum=stratum+tcp://m.powerpool.jp:33333
+  set stratum=stratum+tcp://pool.knyacki.xyz:8888
   goto change
 )
 if /i "%input%" == "5" (
   set server=mpos
-  set stratum=stratum+tcp://bunnymining.work:19334
+  set stratum=stratum+tcp://m.powerpool.jp:33333
   goto change
 )
 if /i "%input%" == "6" (
+  set server=mpos
+  set stratum=stratum+tcp://bunnymining.work:19334
+  goto change
+)
+if /i "%input%" == "7" (
   set server=mpos
   set stratum=stratum+tcp://bitzenypool.work:19668
   goto change
@@ -274,7 +281,17 @@ if /i "%input%" == "51" (
   set stratum=stratum+tcp://mining.bit-univ.jp:43333
   goto change
 )
+if /i "%input%" == "51" (
+  set server=nomp
+  set stratum=stratum+tcp://mining.bit-univ.jp:43333
+  goto change
+)
 if /i "%input%" == "52" (
+  set server=nomp
+  set stratum=stratum+tcp://daddy-pool.work:15022
+  goto change
+)
+if /i "%input%" == "53" (
   set server=nomp
   set stratum=stratum+tcp://bitzeny.bluepool.info:9999
   goto change
@@ -340,6 +357,7 @@ echo 現在の設定は次のようになっています。
 echo ラピッドスタートモードなのでこの設定で実行します。
 echo set custom thread= %cthread%
 if %cthread%==true (echo thread number= %cthreadnumber%)
+echo cpu priotity= %cthreadpriority%
 echo server= %server%
 echo serveraddress= %stratum%
 echo worker= %worker%

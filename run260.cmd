@@ -45,13 +45,17 @@ if not "%7"=="" (
   set affinity=55
 )
 if not "%8"=="" (set address=%8)
+
+if "%server%"=="nomp-test" ( set server=nomp )
+if "%server%"=="mpos-test" ( set server=mpos )
+
 if "%8"=="1" (goto rapidstart)
 if "%8"=="2" (goto rapidstart)
 if "%9"=="1" (goto rapidstart)
 if "%9"=="2" (goto rapidstart)
 
 set lapool="jp.lapool.me"
-echo BitZeny Starter v1.3.4 for minerd260 made by.kazu0617
+echo BitZeny Starter v1.3.5 for minerd260 made by.kazu0617
 echo このツールは、BitZeny Discordや、IRQチューニングによるハッシュレートの向上を最大限生かせ、かつ設定をなるべく楽に、
 echo 対話式にできるように制作した調整ツールとなります。
 echo 当ツールではLapoolの使用に関して制限をかけております。他のプールサイトを使用していただくようお願いします。
@@ -109,7 +113,8 @@ if defined server (
   goto error 
 )
 
-:mpos
+:mpos-old
+set quiet=
 if /i "%input%" == "1" ( set quiet=-q) 
 if %cthread%==true (
   call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass%
@@ -120,7 +125,8 @@ echo 実行されました。数秒後に設定画面に戻ります
 set input=3
 timeout 5 > nul
 goto repeat
-:nomp
+:nomp-old
+set quiet=
 if /i "%input%" == "1" ( set quiet=-q )
 if %cthread%==true (
   call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address%
@@ -132,7 +138,8 @@ set input=3
 timeout 5 > nul
 goto repeat
 
-:mpos-test
+:mpos
+set quiet=
 if /i "%input%" == "1" ( set quiet=-q) 
 if %cthread%==true (
   call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high minerd260.exe %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass% --cpu-affinity %affinity%
@@ -143,7 +150,8 @@ echo 実行されました。数秒後に設定画面に戻ります
 set input=3
 timeout 5 > nul
 goto repeat
-:nomp-test
+:nomp
+set quiet=
 if /i "%input%" == "1" ( set quiet=-q )
 if %cthread%==true (
   call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address% --cpu-affinity %affinity%
@@ -209,7 +217,7 @@ goto change
 
 :change-ws
 cls
-echo サーバー名を選択してください（2018/01/25現在）
+echo サーバー名を選択してください（2018/02/03現在）
 echo （ここのプリセットに用意されているのは高難易度のもののみです。）
 echo （中難易度、低難易度のものはその他を設定の上URLをコピーしてきて下さい）
 echo ---MPOS(Mining Fee:0%%のサーバーのみ記載)---
@@ -217,14 +225,16 @@ echo [0] 俺のプール＠東京鯖
 echo [1] Happy Miner
 echo [2] ココアプール
 echo [3] ぷりぷりぷーる（bitzeny）
-echo [4] powerpool for BitZeny
-echo [5] Bunnymining
-echo [6] BitZenyPool　寛 永 通 宝
+echo [4] Knyacki pool
+echo [5] powerpool for BitZeny
+echo [6] Bunnymining
+echo [7] BitZenyPool　寛 永 通 宝
 echo [49] その他(MPOS)
 echo ---ここからNOMP(Mining Fee逆順)---
 echo [50] WPOOL(Fee:0.1%%)
 echo [51] kruptos:BitZeny Pool(Fee:0.1%%)
-echo [52] Bluepool(Fee:1%%)
+echo [52] Daddy-pool(Fee:1%%)
+echo [53] Bluepool(Fee:1%%)
 echo [99] その他(NOMP)
 
 set /p input=
@@ -252,15 +262,20 @@ if /i "%input%" == "3" (
 )
 if /i "%input%" == "4" (
   set server=mpos
-  set stratum=stratum+tcp://m.powerpool.jp:33333
+  set stratum=stratum+tcp://pool.knyacki.xyz:8888
   goto change
 )
 if /i "%input%" == "5" (
   set server=mpos
-  set stratum=stratum+tcp://bunnymining.work:19334
+  set stratum=stratum+tcp://m.powerpool.jp:33333
   goto change
 )
 if /i "%input%" == "6" (
+  set server=mpos
+  set stratum=stratum+tcp://bunnymining.work:19334
+  goto change
+)
+if /i "%input%" == "7" (
   set server=mpos
   set stratum=stratum+tcp://bitzenypool.work:19668
   goto change
@@ -276,7 +291,17 @@ if /i "%input%" == "51" (
   set stratum=stratum+tcp://mining.bit-univ.jp:43333
   goto change
 )
+if /i "%input%" == "51" (
+  set server=nomp
+  set stratum=stratum+tcp://mining.bit-univ.jp:43333
+  goto change
+)
 if /i "%input%" == "52" (
+  set server=nomp
+  set stratum=stratum+tcp://daddy-pool.work:15022
+  goto change
+)
+if /i "%input%" == "53" (
   set server=nomp
   set stratum=stratum+tcp://bitzeny.bluepool.info:9999
   goto change

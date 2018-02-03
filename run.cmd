@@ -108,9 +108,9 @@ if defined server (
 set quiet=
 if /i "%input%" == "1" ( set quiet=-q) 
 if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd250.exe %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass%
 ) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd250.exe %quiet% -a yescrypt -o %stratum% -u %worker% -p %workerpass%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd %quiet% -a yescrypt -o %stratum% -u %worker% -p %workerpass%
 )
 echo Às‚³‚ê‚Ü‚µ‚½B”•bŒã‚Éİ’è‰æ–Ê‚É–ß‚è‚Ü‚·
 set input=3
@@ -120,9 +120,9 @@ goto repeat
 set quiet=
 if /i "%input%" == "1" ( set quiet=-q )
 if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd250.exe %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address%
 ) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd250.exe %quiet% -a yescrypt -o %stratum% -u %address%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd %quiet% -a yescrypt -o %stratum% -u %address%
 )
 echo Às‚³‚ê‚Ü‚µ‚½B”•bŒã‚Éİ’è‰æ–Ê‚É–ß‚è‚Ü‚·
 set input=3
