@@ -20,4 +20,4 @@ Minerd走らせるときに細かく設定できるbat。
 
 ## 募金は？
 `ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6`<br>
-参考までに配布開始から今(2018/01/28 03:37)まで0ZNY募金されました。
+[![BZA](http://bsb.bitzeny.zinntikumugai.xyz/API.php?data=zeny/ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6/v1/blue/現在の寄付額/balance)]()
