@@ -1,6 +1,8 @@
-# BitZeny-Starter
-BitZeny Starter for Miner
 
+
+# BitZeny-Starter [![BZA](http://bsb.bitzeny.zinntikumugai.xyz/API.php?data=zeny/ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6/v1/blue/現在の寄付額/balance)]()
+
+BitZeny Starter for Miner 
 ## なにこれ
 Minerd走らせるときに細かく設定できるbat。
 
@@ -19,5 +21,4 @@ Minerd走らせるときに細かく設定できるbat。
 モジラのライセンスで書いているので、その範囲であればどうぞ
 
 ## 募金は？
-`ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6`<br>
-[![BZA](http://bsb.bitzeny.zinntikumugai.xyz/API.php?data=zeny/ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6/v1/blue/現在の寄付額/balance)]()
+`ZtSYdHZjBuHP3Zp4yHhhzQRtmjhFJnvah6`
