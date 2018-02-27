@@ -44,15 +44,15 @@ if not "%7"=="" (
 ) else (
   set affinity=55
 )
-if not "%8"=="" (set address=%8)
+if not "%8"=="" ( set address="%8" )
 
 if "%server%"=="nomp-test" ( set server=nomp )
 if "%server%"=="mpos-test" ( set server=mpos )
 
-if "%8"=="1" (goto rapidstart)
-if "%8"=="2" (goto rapidstart)
-if "%9"=="1" (goto rapidstart)
-if "%9"=="2" (goto rapidstart)
+if "%8"=="1" ( goto rapidstart )
+if "%8"=="2" ( goto rapidstart )
+if "%9"=="1" ( goto rapidstart )
+if "%9"=="2" ( goto rapidstart )
 
 set lapool="jp.lapool.me"
 echo BitZeny Starter v1.3.5 for minerd260 made by.kazu0617
@@ -65,13 +65,13 @@ timeout 10 >nul
 cls
 TITLE "BitZeny-Starter ( CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )"
 echo set custom thread= %cthread%
-if %cthread%==true (echo thread number= %cthreadnumber%)
+if %cthread%==true ( echo thread number= %cthreadnumber% )
 echo servertype= %server%
 echo serveraddress= %stratum%
 echo worker= %worker%
 echo workerpass= %workerpass%
 echo affinity= %affinity%
-if not "%server%"=="" (echo address= %address%)
+if not "%server%"=="" ( echo address= %address% )
 echo この設定は次のような値をショートカットで設定することで直接設定可能です。
 if not "%address%"=="" (
   echo %0 %server% %stratum% %worker% %workerpass% %cthread% %cthreadnumber% %affinity% %address% %9
@@ -115,7 +115,7 @@ if defined server (
 
 :mpos-old
 set quiet=
-if /i "%input%" == "1" ( set quiet=-q) 
+if /i "%input%" == "1" ( set quiet=-q )
 if %cthread%==true (
   call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass%
 ) else (
@@ -140,7 +140,7 @@ goto repeat
 
 :mpos
 set quiet=
-if /i "%input%" == "1" ( set quiet=-q) 
+if /i "%input%" == "1" ( set quiet=-q )
 if %cthread%==true (
   call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high minerd260.exe %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass% --cpu-affinity %affinity%
 ) else (
@@ -154,9 +154,9 @@ goto repeat
 set quiet=
 if /i "%input%" == "1" ( set quiet=-q )
 if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address% --cpu-affinity %affinity%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address%.%worker% --cpu-affinity %affinity%
 ) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high minerd260.exe %quiet% -a yescrypt -o %stratum% -u %address% --cpu-affinity %affinity%
+  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high minerd260.exe %quiet% -a yescrypt -o %stratum% -u %address%.%worker% --cpu-affinity %affinity%
 )
 echo 実行されました。数秒後に設定画面に戻ります
 set input=3
@@ -175,23 +175,23 @@ echo [5] マイナーアドレス (一部環境のみ)
 echo [9] 編集を終了する
 echo ---簡易表示---
 echo set custom thread= %cthread%
-if "%cthread%"=="true" (echo thread number= %cthreadnumber%)
+if "%cthread%"=="true" ( echo thread number= %cthreadnumber% )
 echo server= %server%
 echo serveraddress= %stratum%
 echo worker= %worker%
 echo workerpass= %workerpass%
 echo affinity= %affinity%
-if not "%server%"=="" (echo address= %address%)
+if not "%server%"=="" ( echo address= %address% )
 
 set /p input=
 if defined input set input=%input:"=%
-if /i "%input%" == "0" (goto change-t)
-if /i "%input%" == "1" (goto change-ws)
-if /i "%input%" == "2" (goto change-wn)
-if /i "%input%" == "3" (goto change-wp)
-if /i "%input%" == "4" (goto change-af)
-if /i "%input%" == "5" (goto change-ad)
-if /i "%input%" == "9" (goto repeat)
+if /i "%input%" == "0" ( goto change-t )
+if /i "%input%" == "1" ( goto change-ws )
+if /i "%input%" == "2" ( goto change-wn )
+if /i "%input%" == "3" ( goto change-wp )
+if /i "%input%" == "4" ( goto change-af )
+if /i "%input%" == "5" ( goto change-ad )
+if /i "%input%" == "9" ( goto repeat )
 goto change
 
 :change-t
@@ -210,6 +210,8 @@ if /i "%input%" == "1" (
   set cthreadnumber=0
   goto change
 )
+goto change-t
+
 :change-ct
 echo スレッド数を入力してください(チェックはしないので注意！)... 
 set /P cthreadnumber=
@@ -217,24 +219,47 @@ goto change
 
 :change-ws
 cls
-echo サーバー名を選択してください（2018/02/03現在）
+echo サーバー名を選択してください（2018/02/28現在）
 echo （ここのプリセットに用意されているのは高難易度のもののみです。）
 echo （中難易度、低難易度のものはその他を設定の上URLをコピーしてきて下さい）
-echo ---MPOS(Mining Fee:0%%のサーバーのみ記載)---
+echo ---MPOS(Mining Fee:0%% のサーバーのみ記載)---
+
 echo [0] 俺のプール＠東京鯖
-echo [1] Happy Miner
-echo [2] ココアプール
-echo [3] ぷりぷりぷーる（bitzeny）
-echo [4] Knyacki pool
-echo [5] powerpool for BitZeny
-echo [6] Bunnymining
-echo [7] BitZenyPool　寛 永 通 宝
+echo > URL: https://bitzeny.mypool.tokyo/
+echo [1] ココアプール
+echo > URL: https://www.cocoapool.net/
+echo [2] ぷりぷりぷーる（bitzeny）
+echo > URL: https://puripuripool.tk/
+echo [3] Knyacki pool
+echo > URL: https://pool.knyacki.xyz/
+echo [4] Auriga BitZeny Pool
+echo > URL: https://zeny.auri.ga/
+echo [5] 禅風 : A Bitzeny Mining Pool
+echo > URL: https://zenpoo.nyem.net/
+echo [6] powerpool for BitZeny
+echo > URL: https://zny.powerpool.jp/
+echo [8] Fi Pool
+echo > URL: https://fipool.com/
+echo [9] Bunnymining
+echo > URL: https://bunnymining.work/bitzeny/
+echo [10] BitZenyPool 寛永通宝
+echo > URL: https://portal.bitzenypool.work/
 echo [49] その他(MPOS)
 echo ---ここからNOMP(Mining Fee逆順)---
-echo [50] WPOOL(Fee:0.1%%)
-echo [51] kruptos:BitZeny Pool(Fee:0.1%%)
-echo [52] Daddy-pool(Fee:1%%)
-echo [53] Bluepool(Fee:1%%)
+echo [50] 人のプール( Fee:0%% )
+echo > URL: http://mining.zinntikumugai.xyz/
+echo [51] WPOOL( Fee:0.1%% )
+echo > URL: https://wpool.work/
+echo [52] kruptos:BitZeny Pool( Fee:0.1%% )
+echo > URL: http://mining.bit-univ.jp/
+echo [53] mofumofu.me( Fee:0.1%% )
+echo > URL: https://zny.mofumofu.me/
+echo [54] Daddy-pool( Fee:1%% )
+echo > URL: http://daddy-pool.work/
+echo [55] Bluepool( Fee:1%% )
+echo > URL: https://bitzeny.bluepool.info/
+echo [56] 庶民プール( Fee:1%% )
+echo > URL: https://nomp1.arunyastyle.com/
 echo [99] その他(NOMP)
 
 set /p input=
@@ -247,63 +272,90 @@ if /i "%input%" == "0" (
 
 if /i "%input%" == "1" (
   set server=mpos
-  set stratum=stratum+tcp://miner.happy-miner.cc:3333
+  set stratum=stratum+tcp://s.cocoapool.net:14943
   goto change
 )
 if /i "%input%" == "2" (
   set server=mpos
-  set stratum=stratum+tcp://s.cocoapool.net:14943
+  set stratum=stratum+tcp://puripuripool.tk:18021
   goto change
 )
 if /i "%input%" == "3" (
   set server=mpos
-  set stratum=stratum+tcp://puripuripool.tk:18001
+  set stratum=stratum+tcp://pool.knyacki.xyz:8888
   goto change
 )
 if /i "%input%" == "4" (
   set server=mpos
-  set stratum=stratum+tcp://pool.knyacki.xyz:8888
+  set stratum=stratum+tcp://zeny.auri.ga:3333
   goto change
 )
 if /i "%input%" == "5" (
   set server=mpos
-  set stratum=stratum+tcp://m.powerpool.jp:33333
+  set stratum=stratum+tcp://zenpoo.nyem.net:19666
   goto change
 )
 if /i "%input%" == "6" (
   set server=mpos
-  set stratum=stratum+tcp://bunnymining.work:19334
+  set stratum=stratum+tcp://m.powerpool.jp:33333
   goto change
 )
-if /i "%input%" == "7" (
+if /i "%input%" == "8" (
+  set server=mpos
+  set stratum=stratum+tcp://fipool.com:19000
+  goto change
+)
+if /i "%input%" == "9" (
+  set server=mpos
+  set stratum=stratum+tcp://bitzeny.bunnymining.work:19334
+  goto change
+)
+if /i "%input%" == "10" (
   set server=mpos
   set stratum=stratum+tcp://bitzenypool.work:19668
   goto change
 )
-
-if /i "%input%" == "50" (
+REM NOMP/ZNY-NOMPプール
+if /i "%input%" == "51" (
+  REM WPOOL
   set server=nomp
   set stratum=stratum+tcp://wpool.work:15022
   goto change
 )
-if /i "%input%" == "51" (
-  set server=nomp
-  set stratum=stratum+tcp://mining.bit-univ.jp:43333
-  goto change
-)
-if /i "%input%" == "51" (
-  set server=nomp
-  set stratum=stratum+tcp://mining.bit-univ.jp:43333
-  goto change
-)
 if /i "%input%" == "52" (
+  REM kruptos:BitZeny Pool
+  set server=nomp
+  set stratum=stratum+tcp://mining.bit-univ.jp:43333
+  goto change
+)
+if /i "%input%" == "54" (
+  REM DaddyPool
   set server=nomp
   set stratum=stratum+tcp://daddy-pool.work:15022
   goto change
 )
-if /i "%input%" == "53" (
+if /i "%input%" == "55" (
+  REM BluePool
   set server=nomp
   set stratum=stratum+tcp://bitzeny.bluepool.info:9999
+  goto change
+)
+if /i "%input%" == "53" (
+  REM mofumofu.me
+  set server=nomp
+  set stratum=stratum+tcp://zny.mofumofu.me:3333
+  goto change
+)
+if /i "%input%" == "56" (
+  REM 庶民プール
+  set server=nomp
+  set stratum=stratum+tcp://nomp1.arunyastyle.com:46491
+  goto change
+)
+if /i "%input%" == "50" (
+　REM 人のプール
+  set server=nomp
+  set stratum=stratum+tcp://stratum.zinntikumugai.xyz:4002
   goto change
 )
 
@@ -366,13 +418,13 @@ goto change
 echo 現在の設定は次のようになっています。
 echo ラピッドスタートモードなのでこの設定で実行します。
 echo set custom thread= %cthread%
-if %cthread%==true (echo thread number= %cthreadnumber%)
+if %cthread%==true ( echo thread number= %cthreadnumber% )
 echo server= %server%
 echo serveraddress= %stratum%
 echo worker= %worker%
 echo workerpass= %workerpass%
 echo affinity= %affinity%
-if not "%server%"=="" (echo address= %address%)
+if not "%server%"=="" ( echo address= %address% )
 
 if "%8"=="2" (
   echo QuietMode Enable
