@@ -46,9 +46,6 @@ if not "%7"=="" (
 )
 if not "%8"=="" ( set address="%8" )
 
-if "%server%"=="nomp-test" ( set server=nomp )
-if "%server%"=="mpos-test" ( set server=mpos )
-
 if "%8"=="1" ( goto rapidstart )
 if "%8"=="2" ( goto rapidstart )
 if "%9"=="1" ( goto rapidstart )
@@ -112,31 +109,6 @@ if defined server (
 ) else ( 
   goto error 
 )
-
-:mpos-old
-set quiet=
-if /i "%input%" == "1" ( set quiet=-q )
-if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -a yescrypt -t %cthreadnumber% -o %stratum% -u %worker% -p %workerpass%
-) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %worker% / %workerpass% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -a yescrypt -o %stratum% -u %worker% -p %workerpass%
-)
-echo ŽÀs‚³‚ê‚Ü‚µ‚½B”•bŒã‚ÉÝ’è‰æ–Ê‚É–ß‚è‚Ü‚·
-set input=3
-timeout 5 > nul
-goto repeat
-:nomp-old
-set quiet=
-if /i "%input%" == "1" ( set quiet=-q )
-if %cthread%==true (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -t %cthreadnumber% -a yescrypt -o %stratum% -u %address%
-) else (
-  call cmd /c start "BitZeny-Miner ( %quiet% CustomThread:%cthread% Num:%cthreadnumber% | pool:%server% / %stratum% / %address% | Affinity:%affinity% )" /high /affinity %affinity% minerd260.exe %quiet% -a yescrypt -o %stratum% -u %address%
-)
-echo ŽÀs‚³‚ê‚Ü‚µ‚½B”•bŒã‚ÉÝ’è‰æ–Ê‚É–ß‚è‚Ü‚·
-set input=3
-timeout 5 > nul
-goto repeat
 
 :mpos
 set quiet=

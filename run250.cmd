@@ -46,9 +46,6 @@ if not "%7"=="" (
 )
 if not "%8"=="" ( set address="%8" )
 
-if "%server%"=="nomp-test" ( set server=nomp )
-if "%server%"=="mpos-test" ( set server=mpos )
-
 if "%8"=="1" ( goto rapidstart )
 if "%8"=="2" ( goto rapidstart )
 if "%9"=="1" ( goto rapidstart )
@@ -92,9 +89,9 @@ echo [1] OK(QuietMode)
 echo [2] NG (修正する)
 set /p input=
 if defined input set input=%input:"=%
-if /i "%input%" == "0" (goto starter)
-if /i "%input%" == "1" (goto starter)
-if /i "%input%" == "2" (goto change)
+if /i "%input%" == "0" ( goto starter )
+if /i "%input%" == "1" ( goto starter )
+if /i "%input%" == "2" ( goto change )
 goto repeat
 
 :starter
@@ -375,7 +372,7 @@ goto change
 
 :change-af
 cls
-echo アフィニティの値を入力してください(16進数でお願いします。また、minerd260+nomp-test,mpos-test使用時は0xが先頭に必要となります。チェックはしないので注意！)...
+echo アフィニティの値を入力してください(チェックはしないので注意！)...
 echo TIPS: アフィニティの値に関しては、基本的には[IRQチューニング]といった言葉で検索してもらえればOKです。
 echo また、一応簡易的に説明しますと、Windows上の仕様として1/2から1/3の分のスレッド数を設定するようにアフィニティに設定する
 echo （いわゆる、物理コアのみ指定）を行うと早くなる、といったデータは出ています。
